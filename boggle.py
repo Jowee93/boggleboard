@@ -116,7 +116,8 @@ def get_first_char() :
 get_first_char()
 
 ##### Turn first characters to a list and make it unique #####
-unique_all_first_position = [list(item) for item in set(tuple(row) for row in all_first_position) ]
+unique_all_first_position = [list(item) for item in set(tuple(row) for row in all_first_position)]
+
 
 ##### Check horizontal axis #####
 def checkHorizontal() :
@@ -223,34 +224,86 @@ directions = [
 
 
 
-def checkAllDir() :
-    match = False
-    matches = []
+# def checkAllDir() :
+#     match = False
+#     matches = []
     
-    # check horizontal from left to right
-    for i in range(0, len(unique_all_first_position)) :
-        if match == True :
-            return True
-        else :    
-            for j in range(1, len(word_list)) :
-                for k in range(0, len(directions)) :
-                    try :
-                        if boggle_board[unique_all_first_position[i][0] + directions[k][0]][unique_all_first_position[i][1] + directions[k][1]] == word_list[1] :
-                            position = [unique_all_first_position[i][0] + directions[k][0],unique_all_first_position[i][1] + directions[k][1]]
-                            matches.append(position)
-                            print(f"first positions are : {unique_all_first_position[i][0]}, {unique_all_first_position[i][1]}")
-                            print(f"{word_list[1]} matches are : {matches}")
-                        else :
-                            match = False
+#     # check horizontal from left to right
+#     for i in range(0, len(unique_all_first_position)) :
+#         if match == True :
+#             return True
+#         else :    
+#             for j in range(1, len(word_list)) :
+#                 for k in range(0, len(directions)) :
+#                     if len(word_list) <=2 :
+                        
+#                         try :
+#                             if boggle_board[unique_all_first_position[i][0] + directions[k][0]][unique_all_first_position[i][1] + directions[k][1]] == word_list[1] :
+#                                 position = [unique_all_first_position[i][0] + directions[k][0],unique_all_first_position[i][1] + directions[k][1]]
+#                                 matches.append(position)
+#                                 print(f"first positions are : {unique_all_first_position[i][0]}, {unique_all_first_position[i][1]}")
+#                                 print(f"{word_list[1]} matches are : {matches}")
+#                             else :
+#                                 continue
+                                
+#                         except :
+#                             continue
                             
-                    except :
-                        match = False 
+#                     else :
                         
-    if match == False :
-        return matches
+                        
+                
+                        
+#     if matches != [] :
+#         return True
+#     else :
+#         return False
+                        
+# print(f"All matched directions: {checkAllDir()}")
+
+dictOfWords = {}
+position = []
+next_position = []
+unique_next_position = []
+combined_results = []
+
+def checkAllDir (word, length, start) :
+    next_position = []
+
+    if length <= 1 :
+        return True
+    else:
+        for i in range(0, 1) :
+            for j in range(0, len(directions)) :
+                try:
+                    if boggle_board[max(0,start[0][0] + directions[j][0])][max(0,start[0][1] + directions[j][1])] == word[1] :
+                        position = [max(0,start[0][0] + directions[j][0]),max(0,start[0][1] + directions[j][1])]
+                        next_position.append(position)
+                        unique_next_position = [list(item) for item in set(tuple(row) for row in next_position)]
+                        print(f"{start[0]} next is {unique_next_position}")
+                        
+                except :
+                    continue
+            
+            del word[0]
+            # unique_next_position = [list(item) for item in set(tuple(row) for row in next_position)]
+            checkAllDir(word, len(word), unique_next_position)
+    
+    if unique_next_position != [] :
+        combined_results.append(f"{start[0]} : True")
     else :
-        return matches
-                        
-print(f"All matched directions: {checkAllDir()}")
+        combined_results.append(f"{start[0]} : False")
+        
+    return combined_results
+    
+    
+    # if next_position != [] :
+    #     return True
+    # else :
+    #     return False      
+        
+print(checkAllDir(word_list, len(word_list), unique_all_first_position))
 
 
+    
+    
