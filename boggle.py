@@ -9,6 +9,14 @@ boggle_board = [
     ["-","-","-","-"]
 ]
 
+# boggle_board = [
+#     ["Z","F","L","S"],
+#     ["E","H","N","W"],
+#     ["B","A","U","Y"],
+#     ["H","I","I","H"]
+# ]
+
+
 ##### Part 1 : Not so smart boggle board #### 
 
 # def print_boggle_board() :
@@ -51,7 +59,7 @@ def shuffle_smarter_boggle_board() :
     
     # random shuffle
     random.shuffle(dice)
-
+    
     for i in range (0, len(dice)) :
         random.shuffle(dice[i])
 
@@ -266,43 +274,81 @@ position = []
 next_position = []
 unique_next_position = []
 combined_results = []
+first_word_length = len(word_list)
+first_word = word_list
+count = 0
 
 def checkAllDir (word, length, start) :
+    count = length
     next_position = []
-
+    unique_next_position = []
+    
     if length <= 1 :
+        # print(True)
         return True
-    else:
-        for i in range(0, 1) :
+        
+    else:     
+        # del word[0]
+        for i in range(0, len(start)) :           
             for j in range(0, len(directions)) :
-                try:
-                    if boggle_board[max(0,start[0][0] + directions[j][0])][max(0,start[0][1] + directions[j][1])] == word[1] :
-                        position = [max(0,start[0][0] + directions[j][0]),max(0,start[0][1] + directions[j][1])]
+                # try:
+                    if boggle_board[min(3,max(0,start[i][0] + directions[j][0]))][min(3,max(0,start[i][1] + directions[j][1]))] == word[1] :
+                        position = [min(3,max(0,start[i][0] + directions[j][0])),min(3,max(0,start[i][1] + directions[j][1]))]
                         next_position.append(position)
                         unique_next_position = [list(item) for item in set(tuple(row) for row in next_position)]
-                        print(f"{start[0]} next is {unique_next_position}")
+                        # print(f"i is {i}, j is {j}")
+                        # print(f"next_position is : {next_position}")
+                        # print(f"Start position {start[i]} letter {boggle_board[start[i][0]][start[i][1]]} next letter {word[1]}  is {unique_next_position}")
                         
-                except :
-                    continue
+                # except :
+                #     print(direction[j])
+                #     print(f"Start position {start[i]} letter {boggle_board[start[i][0]][start[i][1]]} next letter {word[1]}  is {unique_next_position}")
+                #     continue
             
-            del word[0]
-            # unique_next_position = [list(item) for item in set(tuple(row) for row in next_position)]
-            checkAllDir(word, len(word), unique_next_position)
-    
-    if unique_next_position != [] :
-        combined_results.append(f"{start[0]} : True")
-    else :
-        combined_results.append(f"{start[0]} : False")
+            # try:
+            #     print(word)
+            #     del word[1]
+            #     print(word)
+                
+            # except: 
+            #     print(word)
+                
+                # unique_next_position = [list(item) for item in set(tuple(row) for row in next_position)]
+                
+                # if unique_next_position == [] :
+                #     continue
+                
+            # if unique_next_position != [] :
+            #     combined_results.append(f"{start[i]} letter {word[1]} : True")
+            #     # print(unique_next_position)
+            #     # print(combined_results)
+                
+            # else :
+            #     # print(f"Start position {start[i]} letter {boggle_board[start[i][0]][start[i][1]]} next letter {word[1]}  is {unique_next_position}")
+            #     combined_results.append(f"{start[0]} letter {word[1]} : False")
+                
+                # print(unique_next_position)
+                # print(combined_results)
         
-    return combined_results
-    
-    
-    # if next_position != [] :
-    #     return True
-    # else :
-    #     return False      
+        del word[0]    
         
-print(checkAllDir(word_list, len(word_list), unique_all_first_position))
+        if unique_next_position != [] :
+            if checkAllDir(word, len(word), unique_next_position) == True :
+                return True
+            else:
+                return False
+            
+        return False
+    
+if checkAllDir(word_list, len(word_list), unique_all_first_position) == False:
+    print(f"{False} !")
+
+else:
+    print(f"{True} !")
+
+# checkAllDir(word_list, len(word_list), unique_all_first_position)
+
+# print(checkAllDir(word_list, len(word_list), unique_all_first_position))
 
 
     
